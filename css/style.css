@@ -37,3 +37,22 @@ body {
 .title_photo {
     text-align: center;
 }
+
+.button_js {
+    text-align: center;
+}
+
+#myButton {
+    border: none;
+    border-radius: 5px;
+    width: 200px;
+    height: 40px;
+    background-color:chocolate;
+    color: bisque;
+    font-weight: bold;
+}
+
+#demo img {
+    margin-top: 20px;
+    width: 75%;
+}
