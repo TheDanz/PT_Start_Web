@@ -54,6 +54,56 @@
             </div>
         </div>
     </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h1 class="Hello">
+                    Привет, <?php echo $_COOKIE['User']; ?>
+                </h1>
+            </div>
+            <div class="col-4">
+                <form method="POST" action="profile.php" enctype="multipart/form-data" name="upload">
+                    <input type="text" class="form" name="title" placeholder="Post title">
+                    <input type="file" name="file" /><br>
+                    <textarea name="text" cols="30" rows="10" placeholder="Your text here ..."></textarea>
+                    <button type="submit" class="btn_red btn__reg" name="submit">Продолжить</button>
+                </form>
+            </div>
+        </div>
+    </div>
     <script type="text/javascript" src="js/button.js"></script>
 </body>
 </html>
+
+<?php
+require_once('db.php');
+$link = mysqli_connect('127.0.0.1', 'root', 'changeme2', 'my_db');
+
+if (isset($_POST['submit'])) {
+
+    $title = $_POST['title'];
+    $main_text = $_POST['text'];
+
+    if (!$title || !$main_text) die ("Заполните все поля");
+
+    $sql = "INSERT INTO posts (title, main_text) VALUES ('$title', '$main_text')";
+
+    if (!mysqli_query($link, $sql)) die ("Не удалось добавить пост");
+
+    if(!empty($_FILES["file"]))
+    {
+        if (((@$_FILES["file"]["type"] == "image/gif") || (@$_FILES["file"]["type"] == "image/jpeg")
+        || (@$_FILES["file"]["type"] == "image/jpg") || (@$_FILES["file"]["type"] == "image/pjpeg")
+        || (@$_FILES["file"]["type"] == "image/x-png") || (@$_FILES["file"]["type"] == "image/png"))
+        && (@$_FILES["file"]["size"] < 102400))
+        {
+            move_uploaded_file($_FILES["file"]["tmp_name"], "upload/" . $_FILES["file"]["name"]);
+            echo "Load in:  " . "upload/" . $_FILES["file"]["name"];
+        }
+        else
+        {
+            echo "upload failed!";
+        }
+    }
+}
+?>
